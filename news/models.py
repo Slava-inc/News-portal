@@ -1,3 +1,61 @@
 from django.db import models
+from django.contrib.auth.models import User
+from news.resources import CATEGORIES, news
 
-# Create your models here.
+
+class Author(models.Model):
+    rating = models.FloatField(default=0.0)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def update_rating(self):
+        posts = Post.objects.filter(author=self)
+        author_comments = Comment.objects.filter(user=self.user)
+        post_comments = Comment.objects.filter(post=posts)
+        self.rating = sum([3 * r.rating for r in posts]) + sum([r.rating for r in author_comments]) + sum([r.rating for r in post_comments])
+
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+
+
+class Post(models.Model):
+    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+    post_type = models.CharField(max_length=2, choices=CATEGORIES, default=news,)
+    time_in = models.DateTimeField(auto_now_add=True)
+    category = models.ManyToManyField('Category', through='PostCategory')
+    header = models.CharField(max_length=250, blank=False)
+    text = models.CharField(blank=False, max_length=10000)
+    rating = models.FloatField(default=0.0)
+    
+    def like(self):
+        self.rating += 1
+        self.save()
+
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
+
+    def preview(self):
+        return self.text[:124] + '...'
+
+class PostCategory(models.Model):
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(blank=False, max_length=5000)
+    date = models.DateTimeField(auto_now_add=True)
+    rating = models.FloatField(default=0.0)
+
+    def like(self):
+        self.rating += 1
+        self.save()
+
+    def dislike(self):
+        self.rating -= 1
+        self.save()
