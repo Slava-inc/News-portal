@@ -12,6 +12,7 @@ class Author(models.Model):
         author_comments = Comment.objects.filter(user=self.user)
         post_comments = Comment.objects.filter(post=posts)
         self.rating = sum([3 * r.rating for r in posts]) + sum([r.rating for r in author_comments]) + sum([r.rating for r in post_comments])
+        self.save()
 
 
 

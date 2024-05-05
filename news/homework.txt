@@ -1,0 +1,37 @@
+# import
+python3 manage.py shell
+from news.models import *
+from django.contrib.auth.models import User
+from news.resources import CATEGORIES, news, article
+
+# objects creation
+user1 = User.objects.create_user('user1')
+user2 = User.objects.create_user('user2')
+auth1 = Author.objects.create(user=user1)
+auth2 = Author.objects.create(user=user2)
+cat1 = Category.objects.create(name = 'Sport')
+cat2 = Category.objects.create(name = 'Animals')
+cat3 = Category.objects.create(name = 'Python')
+cat4 = Category.objects.create(name = 'Django')
+
+txt1 = 'Поединок закончился победой бразильца единогласным решением судей. Алдо вернулся в октагон впервые с августа 2022 года, когда потерпел поражение от грузина Мераба Двалишвили. У Мартинеса прервалась шестиматчевая победная серия.'
+header = 'Легендарный бразилец одержал победу на UFC 301 в Рио-де-Жанейро'
+n1 = Post.objects.create(author = auth1, post_type = news, header=header, text=txt1)
+txt2 = "The model reference documentation explains how to use Django’s standard field classes – CharField, DateField, etc. For many purposes, those classes are all you’ll need. Sometimes, though, the Django version won’t meet your precise requirements, or you’ll want to use a field that is entirely different from those shipped with Django."
+txt3 = 'PEP stands for Python Enhancement Proposal, and there are many PEPs. These documents primarily describe new features proposed for the Python language, but some PEPs also focus on design and style and aim to serve as a resource for the community. PEP 8 is one of these style-focused PEPs.'
+header = 'How to create custom model fields'
+a1 = Post.objects.create(author = auth2, post_type = article, header=header, text=txt2)
+header = 'How to Write Beautiful Python Code With PEP 8'
+a2 = Post.objects.create(author = auth2, post_type = article, header=header, text=txt3)
+n1.category.add(cat1)
+a1.category.add(cat3)
+a1.category.add(cat4)
+com1 = Comment.objects.create(post=n1, user=user1, text='comment1 positive')
+com2 = Comment.objects.create(post=a1, user=user1, text='comment2 positive')
+com3 = Comment.objects.create(post=a2, user=user2, text='comment3 positive')
+com4 = Comment.objects.create(post=a2, user=user1, text='comment4 negative')
+n1.like()
+a1.like()
+a2.like()
+a2.dislike()
+auth1.update_rating()
