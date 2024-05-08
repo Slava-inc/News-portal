@@ -41,3 +41,11 @@ com3.dislike()
 com4.dislike()
 auth1.update_rating()
 auth2.update_rating() 
+Author.objects.all().order_by('-rating')[0].user
+Author.objects.all().order_by('-rating')[0].rating
+best_post = Post.objects.all().order_by('-rating')[0]
+best_post.time_in
+best_post.author.user
+best_post.rating 
+best_post.header
+best_post.preview()
