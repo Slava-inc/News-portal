@@ -49,3 +49,8 @@ best_post.author.user
 best_post.rating 
 best_post.header
 best_post.preview()
+best_comment = Comment.objects.filter(post=best_post)
+best_comment.all()[0].date
+best_comment.all()[0].user
+best_comment.all()[0].rating
+best_comment.all()[0].text
