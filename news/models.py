@@ -10,10 +10,12 @@ class Author(models.Model):
     def update_rating(self):
         posts = Post.objects.filter(author=self)
         author_comments = Comment.objects.filter(user=self.user)
-        post_comments = Comment.objects.filter(post=posts)
-        self.rating = sum([3 * r.rating for r in posts]) + sum([r.rating for r in author_comments]) + sum([r.rating for r in post_comments])
+        rating = 0.0
+        for p in posts:
+            p_с = Comment.objects.filter(post=p) # post comments
+            rating += sum([r.rating for r in p_с]) # post comment rating sum
+        self.rating = sum([3 * r.rating for r in posts]) + sum([r.rating for r in author_comments]) + rating
         self.save()
-
 
 
 class Category(models.Model):
