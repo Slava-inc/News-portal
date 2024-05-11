@@ -43,6 +43,9 @@ auth1.update_rating()
 auth2.update_rating() 
 Author.objects.all().order_by('-rating')[0].user
 Author.objects.all().order_by('-rating')[0].rating
+
+Author.objects.order_by('-rating').values('user', 'rating').first()
+
 best_post = Post.objects.all().order_by('-rating')[0]
 best_post.time_in
 best_post.author.user
