@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from .models import Post
 
-class PostList(ListView):
+class PostsList(ListView):
     model = Post
     ordering = 'header'
     template_name = 'posts.html'
