@@ -1,5 +1,7 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
+<!-- custom_filters - имя файла с фильтрами в папке templatetags-->
+{% load custom_filters %}
 
 {% block title %}
 Posts
@@ -26,7 +28,7 @@ Posts
         в следующем столбце описание, и т.д.  -->
         <td>{{ post.header }}</td>
         <td>{{ post.time_in | date:'d M Y'}}</td>
-        <td>{{ post.text | truncatewords:20 }}</td>
+        <td>{{ post.text | truncatewords:20 | censor}}</td>
     </tr>
     {% endfor %}
 

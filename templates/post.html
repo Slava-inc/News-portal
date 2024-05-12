@@ -1,5 +1,7 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
+<!-- custom_filters - имя файла с фильтрами в папке templatetags-->
+{% load custom_filters %}
 
 {% block title %}
 <h1> News</h1>
@@ -7,7 +9,7 @@
 
 <!-- В контенте на странице мы выводим заметку, идентификатор которого был передан в url -->
 {% block content %}
-<div> {{post.header}} </div>
-<div>{{post.time_in|date:'d M Y'}} </div>
-{{post.text}}
+<div> {{post.header | censor}} </div>
+<div>{{post.time_in|date:'d M Y' | censor}} </div>
+{{post.text | censor}}
 {% endblock content %}
