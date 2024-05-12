@@ -9,6 +9,15 @@ class PostsList(ListView):
     context_object_name = 'posts'
 
 
+    def get_context_data(self, **kwargs):
+        # С помощью super() мы обращаемся к родительским классам
+        # и вызываем у них метод get_context_data с теми же аргументами,
+        # что и были переданы нам.
+        # В ответе мы должны получить словарь.
+        context = super().get_context_data(**kwargs)
+        context['length'] = None
+        return context
+    
 
 class PostDetail(DetailView):
     model = Post
