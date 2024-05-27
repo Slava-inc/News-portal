@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from news.resources import CATEGORIES, news
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -22,6 +23,9 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Post(models.Model):
@@ -49,11 +53,15 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.header.title()}: {self.preview()}'    
 
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
+
+
 class PostCategory(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
 
-
+    
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
