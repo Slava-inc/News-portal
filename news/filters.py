@@ -2,6 +2,7 @@ from django_filters import FilterSet, DateFilter, DateFromToRangeFilter
 from .models import Post
 from django_filters.widgets import RangeWidget, DateRangeWidget
 
+
 # Создаем свой набор фильтров для модели Post
 # FilterSet, который мы наследуем,
 # должен чем-то напомнить знакомые вам Django дженерики.
@@ -20,5 +21,5 @@ class PostFilter(FilterSet):
            'header': ['icontains'],
            # по имени автора
            'author': ['exact'],
-           'time_in': ['lt', 'gt'],  # дата должна быть в интервале
+           'time_in': ['range'],  # дата должна быть в интервале
        }
