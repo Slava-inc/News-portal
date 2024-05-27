@@ -17,6 +17,8 @@ class Author(models.Model):
         self.rating = sum([3 * r.rating for r in posts]) + sum([r.rating for r in author_comments]) + rating
         self.save()
 
+    def __str__(self):
+        return self.user.username 
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
