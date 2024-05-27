@@ -7,7 +7,7 @@ from django_filters.widgets import RangeWidget, DateRangeWidget
 # должен чем-то напомнить знакомые вам Django дженерики.
 class PostFilter(FilterSet):
     # time_in = DateFilter(lookup_expr='range', widget=DateRangeWidget())
-    time_in = DateFromToRangeFilter(label='Creation date', widget=RangeWidget(attrs={'type': 'date'}))
+    # time_in = DateFromToRangeFilter(label='Creation date', widget=RangeWidget(attrs={'type': 'date'}))
 
     class Meta:
        # В Meta классе мы должны указать Django модель,
@@ -20,5 +20,5 @@ class PostFilter(FilterSet):
            'header': ['icontains'],
            # по имени автора
            'author': ['exact'],
-           # 'time_in': ['lt', 'gt'],  # дата должна быть в интервале
+           'time_in': ['lt', 'gt'],  # дата должна быть в интервале
        }
