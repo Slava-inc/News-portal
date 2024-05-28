@@ -91,6 +91,11 @@ class PostCreate(CreateView):
     # и новый шаблон, в котором используется форма.
     template_name = 'post_edit.html'
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.post_type = 'NE' if self.request.path[:5] == '/news' else 'AR' 
+        return super().form_valid(form)
+    
 # Добавляем представление для изменения товара.
 class PostUpdate(UpdateView):
     form_class = PostForm
