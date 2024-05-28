@@ -21,5 +21,5 @@ class PostFilter(FilterSet):
            'header': ['icontains'],
            # по имени автора
            'author': ['exact'],
-           'time_in': ['range'],  # дата должна быть в интервале
+           'time_in': ['gt'],  # дата должна быть в интервале
        }
