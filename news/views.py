@@ -4,6 +4,7 @@ from .models import Post
 from .filters import PostFilter
 from django.urls import reverse_lazy
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class PostsList(ListView):
     model = Post
@@ -97,7 +98,7 @@ class PostCreate(CreateView):
         return super().form_valid(form)
     
 # Добавляем представление для изменения товара.
-class PostUpdate(UpdateView):
+class PostUpdate(UpdateView, LoginRequiredMixin):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
