@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'news',
     'sign',
     'protect',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # ... include the providers you want to enable:
+    'allauth.socialaccount.providers.google',    
 ]
 
 SITE_ID = 1
