@@ -7,4 +7,8 @@
     {% csrf_token %}
     <input type = "submit" value="Выйти">
 </form>
+
+{% if is_not_author %}
+    <button> <a href="sign/upgrade/">Стать автором</a> </button>
+{% endif %}
 {% endblock %}
