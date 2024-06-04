@@ -5,6 +5,8 @@ from .filters import PostFilter
 from django.urls import reverse_lazy
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 
 class PostsList(ListView):
     model = Post
@@ -84,7 +86,9 @@ class PostSearch(ListView):
         context['filterset'] = self.filterset   
         return context  
     
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    
+    permission_required = ('news.add_post', )
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
@@ -98,7 +102,9 @@ class PostCreate(CreateView):
         return super().form_valid(form)
     
 # Добавляем представление для изменения товара.
-class PostUpdate(UpdateView, LoginRequiredMixin):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+
+    permission_required = ('news.change_post', )
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
