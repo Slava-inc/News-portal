@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
-from .filters import PostFilter
+from .models import Post, CategoryUser, User
 from django.urls import reverse_lazy
 from .forms import PostForm
+from .filters import PostFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+
+from django.shortcuts import redirect
+from django.core.mail import send_mail
 
 
 class PostsList(ListView):
@@ -101,6 +104,20 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         post.post_type = 'NE' if self.request.path[:5] == '/news' else 'AR' 
         return super().form_valid(form)
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = context['category']
+        users = CategoryUser.objects.filter(category_id__exact=category.id)
+        ids = [u['user_id'] for u in users]
+        addresses = [User.objects.get(id=id).email  for id in ids]
+
+        # отправляем письмо
+        send_mail( 
+            subject=context['text'][:50],
+            message='Hello',
+            from_email='slavikdanchenko@gmail.ru', 
+            recipient_list=addresses,
+        )
 # Добавляем представление для изменения товара.
 class PostUpdate(PermissionRequiredMixin, UpdateView):
 
