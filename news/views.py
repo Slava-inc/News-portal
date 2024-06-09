@@ -120,14 +120,14 @@ class PostDelete(DeleteView):
     success_url = reverse_lazy('post_list')
 
 
-class CategoryListView(PostsList):
+class CategoryListView(ListView):
     model = Post
-    template_name = 'category_list.html'
-    context_object_name = 'posts'
+    template_name = 'news/category_list.html'
+    context_object_name = 'category_news_list'
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(categories=self.category).order_by('-created_at')
+        queryset = Post.objects.filter(categories=self.category).order_by('-time_in')
         return queryset
 
     def get_context_data(self, **kwargs):
