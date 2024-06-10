@@ -5,7 +5,7 @@ Categories
 {% endblock title %}
 
 {% block content %}
-<h1 class="text-center"> News ({{posts|length}})</h1>
+<h1 class="text-center"> Категория ({{ category.name }})</h1>
     {% if is_not_subscriber %}
         <p class="=text-center"> <a href="{% url 'subscribe' category_id %}" class="btn btn-secondary btn-sm"> Подписаться </a></p>  
     {% endif %}
