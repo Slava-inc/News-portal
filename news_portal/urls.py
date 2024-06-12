@@ -28,6 +28,6 @@ urlpatterns = [
     path('', include('protect.urls')),
     path('sign/', include('sign.urls')),
     path('accounts/', include('allauth.urls')), 
-    path('categories/<int:pk>', CategoryListView.as_view(), name='category_list'),
-    path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),      
+    path('category/<int:pk>', CategoryListView.as_view(), name='category_list'),
+    path('category/<int:pk>/subscribe', subscribe, name='subscribe'),      
 ]
