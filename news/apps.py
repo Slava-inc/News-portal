@@ -7,4 +7,4 @@ class NewsConfig(AppConfig):
 
     def ready(self) -> None:
         import news.signals
-        return super().ready()
+
