@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from news.resources import CATEGORIES, news
 from django.urls import reverse
+import datetime
 
 
 class Author(models.Model):
@@ -20,6 +21,14 @@ class Author(models.Model):
 
     def __str__(self):
         return self.user.username 
+
+
+    def get_today_posts(self):
+        # today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
+        # today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
+        return len(Post.objects.filter(author=self, time_in=(today_min, today_max)))
+
+
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)

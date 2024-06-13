@@ -39,4 +39,4 @@ def notify_about_new_post(sender, instance, **kwargs):
             subscribers = cat.subscribers.all()
             subscribers_emails += [a.email for a in subscribers] # Добавление почт подписчиков
 
-        send_notifications(instance.preview(), instance.pk, instance.header, subscribers_emails)
+        send_notifications(instance.preview(), instance.pk, instance.header, set(subscribers_emails))
