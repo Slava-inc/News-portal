@@ -166,4 +166,4 @@ SITE_URL = 'http://127.0.0.1:8000'
 DEFAULT_FROM_EMAIL = 'slavikdanchenko@yandex.ru'
 
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
