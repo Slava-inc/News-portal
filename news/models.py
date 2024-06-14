@@ -23,11 +23,6 @@ class Author(models.Model):
         return self.user.username 
 
 
-    def get_today_posts(self):
-        # today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min)
-        # today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max)
-        return len(Post.objects.filter(author=self, time_in=(today_min, today_max)))
-
 
 
 class Category(models.Model):
@@ -69,6 +64,12 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
+    
+    def author_today_posts(self):
+        today_min = datetime.datetime.combine(datetime.date.today(), datetime.time.min).date()
+        today_max = datetime.datetime.combine(datetime.date.today(), datetime.time.max).date()
+
+        return len(Post.objects.filter(author=self.author and self.time_in.replace(tzinfo=None).date()>=today_min and self.time_in.replace(tzinfo=None).date() <= today_max))
 
 
 class PostCategory(models.Model):

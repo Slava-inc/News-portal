@@ -22,7 +22,7 @@ def send_notifications(preview, pk, title, subscribers):
         subject=title, # Заголовок
         body='', # Тело пустое т.к. используем шаблон
         from_email=settings.DEFAULT_FROM_EMAIL,
-        to=subscribers, # Кому отправляем
+        to=list(subscribers), # Кому отправляем
     )
     # Добавляем к сообщению наш шаблон
     msg.attach_alternative(html_content, 'text/html')
