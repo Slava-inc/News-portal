@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 
 from email import message
 from django.conf import settings
-from .models import PostCategory
+from .models import PostCategory, Category
 from django.contrib.auth.models import User
 
 
@@ -47,7 +47,7 @@ def send_congratulations(user_name, email):
     html_content = render_to_string(
         'user_congratulation.html',
         {
-            'text': f'Congratulations {user_name}! You sing up on News portal.',
+            'text': f'Congratulations, {user_name}! You sing up on News portal.',
             'link': f'{settings.SITE_URL}/sign/login'
         }
     )
@@ -66,3 +66,4 @@ def send_congratulations(user_name, email):
 def notify_new_author(sender, instance, **kwargs):
     if kwargs['created']:
         send_congratulations(instance.username, instance.email)
+        # raise Exception('Hello, Signals!')

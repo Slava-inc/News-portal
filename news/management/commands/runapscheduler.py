@@ -9,27 +9,35 @@ from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 from django_apscheduler import util
 
-from models import *
+from news.models import *
 import datetime
+
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
 
 def my_job():
   # Your job processing logic here...
-  print('Hello from job!')
-
   start_day = datetime.datetime.today() - datetime.timedelta(days=7)
   qs = Post.objects.filter(time_in__gte=start_day).values('category')
-  categories = list(set([r['category'] for r in qs]))
-  user_q = [CategoryUser.objects.filter(category=cat) for cat in categories]
-  uid_cid_q = [user.values('user_id', 'category_id') for user in user_q]
-  
-  subscribers_emails = []
+  cat_id = list(set([r['category'] for r in qs]))
 
-  for cat in categories:
+  subscribers_emails = {}
+  for r in cat_id:
+    if r == None:
+      continue
+    cat = Category.objects.get(id=r)
+    subscribers_emails[cat.name] = []
     subscribers = cat.subscribers.all()
-    subscribers_emails += [a.email for a in subscribers] # Добавление почт подписчиков
+    subscribers_emails[cat.name] += [a.email for a in subscribers] # Добавление почт подписчиков
+    print(subscribers_emails[cat.name])
+  
+
+
+
+
 
 
 # The `close_old_connections` decorator ensures that database connections, that have become
