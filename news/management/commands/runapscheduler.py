@@ -17,6 +17,26 @@ from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
+def send_email(cat, subscriber_emails, start_day):
+  posts = Post.objects.filter(time_in__gte=start_day, category=cat)
+
+  html_content = render_to_string(
+        'post_list.html',
+        {
+            'category_news_list': posts,
+            'category': cat
+        }
+    )
+
+  msg = EmailMultiAlternatives(
+        subject=f'News in category {cat.name}', # Заголовок
+        body='', # Тело пустое т.к. используем шаблон
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=list(subscriber_emails), # Кому отправляем
+    )
+    # Добавляем к сообщению наш шаблон
+  msg.attach_alternative(html_content, 'text/html')
+  msg.send()
 
 def my_job():
   # Your job processing logic here...
@@ -32,7 +52,7 @@ def my_job():
     subscribers_emails[cat.name] = []
     subscribers = cat.subscribers.all()
     subscribers_emails[cat.name] += [a.email for a in subscribers] # Добавление почт подписчиков
-    print(subscribers_emails[cat.name])
+    send_email(cat, subscribers_emails[cat.name], start_day)
   
 
 
