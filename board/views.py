@@ -6,4 +6,4 @@ class IndexView(View):
     def get(self, request):
         printer.delay(10)
         hello.delay()
-        return HttpResponse('Hello!')
+        return HttpResponse(request.path)

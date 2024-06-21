@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from django.http import HttpResponse
+from board.tasks import send_news_notification
 
 class PostsList(ListView):
     model = Post
@@ -50,6 +52,11 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     send_news_notification(object=context['object'], action='post_add')
+    #     return context
+    
 
 class PostSearch(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -103,7 +110,11 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         post = form.save(commit=False)
         post.post_type = 'NE' if self.request.path[:5] == '/news' else 'AR' 
         return super().form_valid(form)
-    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        send_news_notification(object=self.object, action='post_add')
+        return context    
 
 # Добавляем представление для изменения товара.
 class PostUpdate(PermissionRequiredMixin, UpdateView):
