@@ -13,6 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from board.tasks import send_news_notification
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class PostsList(ListView):
     model = Post
     ordering = '-time_in'
