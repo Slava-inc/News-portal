@@ -1,10 +1,11 @@
+{% load i18n %}
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 <!-- custom_filters - имя файла с фильтрами в папке templatetags-->
 {% load custom_filters %}
 
 {% block title %}
-<h1> News</h1>
+<h1>trans News</h1>
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим заметку, идентификатор которого был передан в url -->

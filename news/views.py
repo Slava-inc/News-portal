@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from board.tasks import send_news_notification
 
+from django.utils.translation import gettext as _ # импортируем функцию для перевода
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -159,6 +161,6 @@ def subscribe(request, pk):
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)
 
-    message = 'Вы подписались на категорию'
+    message = _('You subscribed on category')
 
     return render(request, 'subscribe.html', {'category': category, 'message': message})

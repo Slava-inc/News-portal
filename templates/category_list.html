@@ -1,13 +1,14 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 <!-- custom_filters - имя файла с фильтрами в папке templatetags-->
 {% block title %}
-Categories
+{% trans "Categories" %}
 {% endblock title %}
 
 {% block content %}
-<h1 class="text-center"> Категория ({{ category.name }})</h1>
+<h1 class="text-center"> {% trans "Category" %} ({{ category.name }})</h1>
     {% if is_not_subscriber %}
-        <p class="=text-center"> <a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm"> Подписаться </a></p>  
+        <p class="=text-center"> <a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm"> {% trans "Subscribe" %} </a></p>  
     {% endif %}
 <ul>
     {% for post in category_news_list %}

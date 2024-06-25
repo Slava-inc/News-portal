@@ -1,14 +1,32 @@
 {% extends "flatpages/default.html" %}
+{% load i18n %}
 
 {% block content %}
-<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
-<div> Здесь может содержаться персональная информация для каждого пользователя </div>
+
+<form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+    <input type="hidden" name="next" value="{{ redirect_to }}">
+    
+    <select name="language" id="">
+        {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+        {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+        {% get_current_language as LANGUAGE_CODE %}
+        {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                {{ language.name_local }} - {{ language.code }}
+            </option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="set">
+</form>
+
+<h2>{% trans "authorized user page" %} {{request.user.username}}</h2>
+<div> {% trans "personal information for any user" %}</div>
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <input type = "submit" value="Выйти">
 </form>
 
 {% if is_not_author %}
-    <button> <a href="sign/upgrade/">Стать автором</a> </button>
+    <button> <a href="sign/upgrade/">{% trans "Became author" %}</a> </button>
 {% endif %}
 {% endblock %}

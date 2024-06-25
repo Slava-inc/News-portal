@@ -1,11 +1,12 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Congratulations</title>
+    <title>{% trans "Congratulations" %}</title>
 </head>
 <body>
-    <h2>You are subscribed to News portal <a href="{{  link }}"></a></h2>
+    <h2>{% trans "You are subscribed to News portal" %} <a href="{{  link }}"></a></h2>
     <p>{{ text }}</p>
 </body>
 </html>
