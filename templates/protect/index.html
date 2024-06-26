@@ -26,6 +26,12 @@
     <input type = "submit" value="Выйти">
 </form>
 
+{% for model in models %}
+<div class="model-class">
+    {{ model.name }}
+</div>
+{% endfor %}
+
 {% if is_not_author %}
     <button> <a href="sign/upgrade/">{% trans "Became author" %}</a> </button>
 {% endif %}
