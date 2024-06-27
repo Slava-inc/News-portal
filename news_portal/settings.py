@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google', 
-    "django_apscheduler",   
+    "django_apscheduler",
+    "rest_framework",   
 ]
 
 SITE_ID = 1

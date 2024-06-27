@@ -18,8 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from news.views import CategoryListView, subscribe
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('swagger-ui/', TemplateView.as_view(
+       template_name='swagger-ui.html',
+       extra_context={'schema_url':'openapi-schema'}
+   ), name='swagger-ui'),
     path('i18n/', include('django.conf.urls.i18n')), # подключаем встроенные эндопинты для работы с локализацией
     path('pages/', include('django.contrib.flatpages.urls')),
 

@@ -17,6 +17,11 @@ from django.utils.translation import gettext as _ # импортируем фу�
 
 import logging
 
+from rest_framework import viewsets
+from rest_framework import permissions
+
+from news.serializers import *
+
 logger = logging.getLogger(__name__)
 
 class PostsList(ListView):
@@ -163,3 +168,57 @@ def subscribe(request, pk):
     message = _('You subscribed on category')
 
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+
+# rest views
+# class SchoolViewset(viewsets.ModelViewSet):
+#    queryset = Post.objects.all()
+#    serializer_class = PostSerializer
+
+import json
+
+
+def news(request):
+    if request.method == 'GET':
+        return HttpResponse(json.dumps([
+            {
+                "header":post.header,
+                "author":post.author,
+                "category":post.category
+            } for post in Post.objects.all()
+        ]))
+    if request.method == 'POST':
+        # Нужно извлечь параметы из тела запроса
+        json_params = json.loads(request.body)
+
+        post = Post.objects.create(
+            header=json_params['header'],
+            category=json_params['category']
+        )
+        return HttpResponse(json.dumps({
+            "header":post.header,
+            "category":post.category,
+        }))
+
+
+def post_id(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(
+             {
+                "id":post.id,
+                "author":post.author,
+                "header":post.header,
+                "category":post.category
+            }))
+    json_params = json.loads(request.body)
+    if request.method == 'PUT':
+        post.header = json_params['header']
+        post.category = json_params['category']
+        post.save()
+        return HttpResponse(json.dumps({
+            "id":post.id,
+            "header":post.header,
+            "category":post.category
+        }))
+
